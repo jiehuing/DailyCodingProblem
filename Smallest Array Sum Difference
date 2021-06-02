@@ -18,12 +18,42 @@ If the array not sorted?
 
 
 
+My Implmentation for a sorted Array
+
+public static (List<int> list1, List<int> list2) smallestSumArrayDifference(int[] arrayInt)
+        {
+            //Assuming array is sorted, else sort array first
+            List<int> set1 = new List<int>();
+            List<int> set2 = new List<int>();
+            int counter1 = 0;
+            int counter2 = 0;
+            for (int i=arrayInt.Length-1;i>=0;i--) //Assuming list sorted in ascending order
+            {
+                if(counter2>counter1)
+                {
+                    counter1 += arrayInt[i];
+                    set1.Add(arrayInt[i]);
+                }
+                else
+                {
+                    counter2 += arrayInt[i];
+                    set2.Add(arrayInt[i]);
+                }
+            }
+            Console.WriteLine("Smallest Difference is "+Math.Abs((counter1-counter2)));
+            Console.WriteLine("List 1 is"+ String.Join(", ", set1.ToArray()));
+            Console.WriteLine("List 2 is" + String.Join(", ", set2.ToArray()));
+            return (set1, set2);
+        }
 
 
-Solution not very optimal????
+
+
+
+Solution from dailycodingproblem not very optimal????
 Consider unsubscribe
 
-Solution
+dailycodingproblem Solution
 One way to solve this problem would to be enumerate over all possible pairs of subsets and find the smallest difference between each pair:
 
 from math import inf
