@@ -52,7 +52,7 @@ ATTEMPT
 
 
 
-SOLN
+Provided Solution
 
 
 Clearly, we need a random string generator for this problem. If you're in an interview and you don't know how to generate a random string by heart, that's fine -- you can just assume you have access to a function that generate N random characters. In this case, we'll create a helper function called _generate_short that does it for us.
