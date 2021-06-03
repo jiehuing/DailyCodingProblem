@@ -3,7 +3,7 @@ Given an array of positive integers, divide the array into two subsets such that
 For example, given [5, 10, 15, 20, 25], return the sets {10, 25} and {5, 15, 20}, which has a difference of 5, which is the smallest possible difference.
 
 
-Interview Attempt:
+PseudoCode:
 Is the array sorted?
 If yes, reverse list(assuming ascending) 
 create two sets and respective sum counter
@@ -50,10 +50,8 @@ public static (List<int> list1, List<int> list2) smallestSumArrayDifference(int[
 
 
 
-Solution from dailycodingproblem not very optimal????
-Consider unsubscribe
+Provided solution:
 
-dailycodingproblem Solution
 One way to solve this problem would to be enumerate over all possible pairs of subsets and find the smallest difference between each pair:
 
 from math import inf
