@@ -10,3 +10,76 @@ Googling,
 Lowest possible rating = 100
 Highest Possible rating = 3000
 If highest lose to lowest, how much points to give?
+
+
+
+Provided Solution:
+Today we will try something different: we will first present the code, and then walk through how it works.
+
+Without further ado:
+
+class Elo:
+    def __init__(self, k=32, n=400, d=1000):
+        self.ratings = {}
+        self.k = k 
+        self.n = n
+        self.default = d
+
+    def add_player(self, name):
+        self.ratings[name] = self.default
+
+    def expected(self, r1, r2):
+        return 1 / (1 + 10 ** ((r2 - r1) / self.n))
+
+    def update(self, p1, p2, outcome):
+        e1 = self.expected(self.ratings[p1], self.ratings[p2])
+        e2 = self.expected(self.ratings[p2], self.ratings[p1])
+
+        o1, o2 = 1 - outcome, outcome
+
+        self.ratings[p1] += self.k * (o1 - e1)
+        self.ratings[p2] += self.k * (o2 - e2)
+So what's going on here?
+
+We have a class, which stores each player's rating in a dictionary. Whenever we add a new player, we set their default rating to 1000. In the future, we could add a skill parameter to our add_player method, so that more experienced players start off with more appropriate values, but this will suffice for the time being.
+
+Next, we have functions that allow us to calibrate the ratings of two players based on the result of their game.
+
+To satisfy the problem requirements, our update function must achieve two goals:
+
+The winner should gain exactly as many points as the loser loses.
+The amount of points gained or lost should reflect the likelihood of the result.
+One concept that is helpful in evaluating the likelihood of an event is the logistic distribution, whose CDF is defined as follows:
+
+L(x) = 1 / (1 + e(u - x)/s))
+
+In other words, the probability of getting a real value x, given some distribution with mean u and standard deviation s, can be found by calculating the result on the right side.
+
+The use of base e and a particular value of s are somewhat arbitrary. When the United States Chess Federation implemented the Elo rating system, they chose a base of 10 and a spread of 400, so we have followed their lead. This results in the following formula, which gives us the likelihood that a player with rating r1 beats a player with rating r2:
+
+L(r1, r2) = 1 / (1 + 10(r2 - r1)/400)
+
+Essentially, these constants make it so that if two players have a rating differential of 400 points, there is a 90% likelihood that the stronger player will win.
+
+Each player's rating is then updated according the formula:
+
+rating += k * (outcome - expected_result)
+
+The outcome can take on one of three values: 1 for a win, 0 for a loss, and 0.5 for a draw. Since the logistic function will always output a value between 0 and 1, the expected result can simply be the probability calculated above.
+
+It only remains to discuss k, which somewhat resembles the standard deviation we saw in the logistic distribution. We can think of this as a constant which represents the sensitivity of a player's rating to new results. The higher the value of k, the more a player's rating will jump around with each game.
+
+Ideally, this would be different for each player, with new players having large values of k which diminish over time, as we become more confident about their probable skill level. But we will hold off on implementing this, since it is incompatible with the requirement that the rating update be zero-sum.
+
+To give an example of how this works in practice, let's say we have two players, Alice and Bob, both initialized at 1000.
+
+Suppose Alice beats Bob 10 times in a row. The first game they play, Alice will gain 16 points, but with each subsequent game she will gain less and less. By their last game, we would be pretty confident that Alice is more skilled than Bob, so a win by Bob would be fairly unlikely. As a result, if Bob wins the next game, his rating would shoot up by around 25 points, as seen in the table below.
+
+ game |  alice | bob 
+---------------------------
+  0   |  1000  |  1000
+  1   |  1016  |  984
+  2   |  1030  |  970
+         ...
+  10  |  1108  |  892
+  11  |  1084  |  916
