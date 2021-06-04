@@ -127,15 +127,34 @@ Case 8
 if 1 even,
 Player 1 wins by removing the first stone
 if 1 odd,
-Player 1 removes 2 stones, passing the situation to player 2,
-player 2 removes 2 stones, passing the situation to player 1.
+Player 1 loses
 
-Test with
-
-      1 4 4
-1st   1 2 4
+Test 
+      1 4 5
+1st   1 2 5
 2nd   1 2 2
-1st   1 
+1st   1 2 1
+2nd   1 1 1
+Case 3 First player lose
+
+      1 4 5
+ 1st  1 4 1
+ 2nd  1 1 1
+ Case 3 First Player lose
+ 
+      1 4 5
+1st   1 4 2
+2nd   1 2 2
+1st   1 1 2
+2nd   1 1 1
+Case 3 First Player lose
+
+      1 2 3
+1st   1 2 2
+2nd   1 1 2
+1st   1 1 1
+Case 3 First player wins?
+
 
 Case 9
 1+ 1+ 1+
@@ -144,6 +163,9 @@ if 3 4 5
 Player 1 can force a win by taking out 1st stack if remaining is even.
 If remaining is odd, player 1 can switch the outcome by leaving a 1 in the first column.
 Player 1 always wins.
+
+Test 
+
 
 
 
